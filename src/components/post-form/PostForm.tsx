@@ -14,7 +14,18 @@ type PostInputValues = {
   image: FileList;
 };
 
-function PostForm({ post }) {
+type PostFormProps = {
+  post?: {
+    $id: string;
+    title: string;
+    content: string;
+    slug: string;
+    status: string;
+    featuredImage: string;
+  };
+};
+
+function PostForm({ post }: PostFormProps) {
   const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm<PostInputValues>({
       defaultValues: {
