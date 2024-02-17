@@ -7,6 +7,7 @@ import store from "./store/store.ts";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home.tsx";
 import { Protected as AuthLayout } from "./components";
+
 import Login from "./pages/Login.tsx";
 import EditPost from "./pages/EditPost.tsx";
 import Signup from "./pages/Signup.tsx";

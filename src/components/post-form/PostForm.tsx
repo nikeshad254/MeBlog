@@ -6,12 +6,13 @@ import { RootState } from "../../store/store";
 import { useCallback, useEffect } from "react";
 import { Button, Input, RTE, Select } from "..";
 
-type PostInputValues = {
+export type PostInputValues = {
   title: string;
   content: string;
   slug: string;
   status: string;
   image: FileList;
+  featuredImage?: string;
 };
 
 type PostFormProps = {
@@ -42,7 +43,7 @@ function PostForm({ post }: PostFormProps) {
   const submit: SubmitHandler<PostInputValues> = async (data) => {
     if (post) {
       const file = data.image[0]
-        ? appwriteService.uploadFile(data.image[0])
+        ? await appwriteService.uploadFile(data.image[0])
         : null;
 
       if (file) {
@@ -51,7 +52,7 @@ function PostForm({ post }: PostFormProps) {
 
       const dbPost = await appwriteService.updatePost(post.$id, {
         ...data,
-        featuredImage: file ? file.$id : undefined,
+        featuredImage: file ? file.$id : "",
       });
 
       if (dbPost) {
@@ -59,7 +60,7 @@ function PostForm({ post }: PostFormProps) {
       }
     } else {
       const file = data.image[0]
-        ? appwriteService.uploadFile(data.image[0])
+        ? await appwriteService.uploadFile(data.image[0])
         : null;
 
       if (file) {
@@ -70,7 +71,7 @@ function PostForm({ post }: PostFormProps) {
         const dbPost = await appwriteService.createPost({
           ...data,
           userId: userData.$id,
-          featuredImage: file ? file.$id : undefined,
+          featuredImage: file ? file.$id : "",
         });
 
         if (dbPost) {
@@ -80,12 +81,12 @@ function PostForm({ post }: PostFormProps) {
     }
   };
 
-  const slugTransform = useCallback((value) => {
+  const slugTransform = useCallback((value: string) => {
     if (value && typeof value === "string") {
       return value
         .trim()
         .toLowerCase()
-        .replace(/^[a-zA-Z\d\s]+/g, "-")
+        .replace(/[^\w\- ]+/g, "-")
         .replace(/\s/g, "-");
     }
     return "";
@@ -93,7 +94,7 @@ function PostForm({ post }: PostFormProps) {
 
   useEffect(() => {
     const subscription = watch((value, { name }) => {
-      if (name === "title") {
+      if (name === "title" && value.title) {
         setValue("slug", slugTransform(value.title), { shouldValidate: true });
       }
     });

@@ -1,15 +1,17 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { Control, Controller } from "react-hook-form";
+import { PostInputValues } from "./post-form/PostForm";
+import conf from "../conf/conf";
 
 type RTEProps = {
-  name?: string;
-  control: Control;
+  name?: "content" | "title" | "slug" | "status" | "image";
+  control: Control<PostInputValues>;
   label?: string;
   defaultValue?: string;
 };
 
 export default function RTE({
-  name,
+  name = "content",
   control,
   label,
   defaultValue = "",
@@ -22,9 +24,11 @@ export default function RTE({
         </label>
       )}
       <Controller
-        name={name || "content"}
+        name={name}
+        control={control}
         render={({ field: { onChange } }) => (
           <Editor
+            apiKey={conf.tinymceApiKey}
             initialValue={defaultValue}
             init={{
               height: 500,

@@ -19,7 +19,7 @@ export default function Protected({
   useEffect(() => {
     if (authentication && authStatus !== authentication) {
       navigate("/login");
-    } else if (!authentication && authStatus === authentication) {
+    } else if (!authentication && authStatus !== authentication) {
       navigate("/");
     }
     setLoader(false);

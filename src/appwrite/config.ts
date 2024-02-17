@@ -1,5 +1,6 @@
 import conf from "../conf/conf";
 import { Databases, Storage, Query, Client, ID } from "appwrite";
+import { TAppwritePost } from "../types";
 
 export class Service {
   client = new Client();
@@ -22,14 +23,7 @@ export class Service {
     featuredImage,
     status,
     userId,
-  }: {
-    title: string;
-    content: string;
-    slug: string;
-    featuredImage: string;
-    status: string;
-    userId: string;
-  }) {
+  }: TAppwritePost) {
     try {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
@@ -50,19 +44,7 @@ export class Service {
 
   async updatePost(
     slug: string,
-    {
-      title,
-      content,
-      featuredImage,
-      status,
-    }: {
-      title: string;
-      content: string;
-      slug: string;
-      featuredImage: string;
-      status: string;
-      userId: string;
-    }
+    { title, content, featuredImage, status }: TAppwritePost
   ) {
     try {
       return await this.databases.updateDocument(
@@ -102,7 +84,7 @@ export class Service {
         slug
       );
     } catch (err) {
-      console.log("Appwrite service :: getPost :: error", err);
+      // console.log("Appwrite service :: getPost :: error", err);
       return false;
     }
   }
@@ -115,7 +97,7 @@ export class Service {
         queries
       );
     } catch (err) {
-      console.log("Appwrite service :: getPosts :: error", err);
+      // console.log("Appwrite service :: getPosts :: error", err);
       return false;
     }
   }
@@ -129,7 +111,7 @@ export class Service {
         file
       );
     } catch (err) {
-      console.log("Appwrite service :: uploadFile :: error", err);
+      // console.log("Appwrite service :: uploadFile :: error", err);
       return false;
     }
   }
@@ -139,12 +121,13 @@ export class Service {
       await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
       return true;
     } catch (err) {
-      console.log("Appwrite service :: deleteFile :: error", err);
+      // console.log("Appwrite service :: deleteFile :: error", err);
       return false;
     }
   }
 
   getFilePreview(fileId: string) {
+    // console.log(fileId);
     return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
   }
 }

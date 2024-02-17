@@ -1,5 +1,6 @@
 import conf from "../conf/conf";
 import { Account, Client, ID } from "appwrite";
+import { TAppwriteUser } from "../types";
 
 export class AuthService {
   client = new Client();
@@ -13,15 +14,7 @@ export class AuthService {
     this.account = new Account(this.client);
   }
 
-  async createAccount({
-    email,
-    password,
-    name,
-  }: {
-    email: string;
-    password: string;
-    name: string;
-  }) {
+  async createAccount({ email, password, name }: TAppwriteUser) {
     try {
       const userAccount = await this.account.create(
         ID.unique(),
@@ -39,7 +32,7 @@ export class AuthService {
     }
   }
 
-  async login({ email, password }: { email: string; password: string }) {
+  async login({ email, password }: TAppwriteUser) {
     try {
       return await this.account.createEmailSession(email, password);
     } catch (err) {

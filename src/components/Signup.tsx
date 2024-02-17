@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
 import { Button, Input } from "./index.js";
 import { useDispatch } from "react-redux";
-import { Resolver, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type SignupFormValues = {
   name: string;
@@ -22,6 +22,7 @@ function Signup() {
     setError("");
     try {
       const userData = await authService.createAccount(data);
+      console.log(userData);
       if (userData) {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(login(userData));
