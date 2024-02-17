@@ -12,7 +12,7 @@ function AllPosts() {
         // Handle the case where getPosts returns false
       } else {
         const posts = value.documents;
-        setPosts(posts);
+        setPosts(posts as any);
       }
     });
   }, []);

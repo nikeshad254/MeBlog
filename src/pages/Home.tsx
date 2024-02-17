@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from "../components";
+import { TAppwritePost } from "../types";
 
 function Home() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<TAppwritePost[]>([]);
 
   useEffect(() => {
     appwriteService.getPosts().then((posts) => {
       if (posts) {
-        setPosts(posts.documents);
+        setPosts(posts.documents as any);
       }
     });
   }, []);
@@ -34,7 +35,11 @@ function Home() {
         <div className="flex flex-wrap">
           {posts.map((post) => (
             <div key={post.$id} className="p-2 w-1/4">
-              <PostCard {...post} />
+              <PostCard
+                $id={post.$id!}
+                featuredImage={post.featuredImage}
+                title={post.title}
+              />
             </div>
           ))}
         </div>

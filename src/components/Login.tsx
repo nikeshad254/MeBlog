@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { login as authLogin } from "../store/authSlice";
 import authService from "../appwrite/auth";
 import { SubmitHandler, useForm } from "react-hook-form";

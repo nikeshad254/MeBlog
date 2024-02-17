@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useCallback, useEffect } from "react";
 import { Button, Input, RTE, Select } from "..";
+import { TAppwritePost } from "../../types";
 
 export type PostInputValues = {
   title: string;
@@ -16,14 +17,7 @@ export type PostInputValues = {
 };
 
 type PostFormProps = {
-  post?: {
-    $id: string;
-    title: string;
-    content: string;
-    slug: string;
-    status: string;
-    featuredImage: string;
-  };
+  post?: TAppwritePost;
 };
 
 function PostForm({ post }: PostFormProps) {
@@ -50,7 +44,7 @@ function PostForm({ post }: PostFormProps) {
         appwriteService.deleteFile(post.featuredImage);
       }
 
-      const dbPost = await appwriteService.updatePost(post.$id, {
+      const dbPost = await appwriteService.updatePost(post.$id!, {
         ...data,
         featuredImage: file ? file.$id : "",
       });

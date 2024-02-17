@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import { Container, PostForm } from "../components";
+import { TAppwritePost } from "../types";
 
 function EditPost() {
-  const [post, setPost] = useState<Document>();
+  const [post, setPost] = useState<TAppwritePost>();
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -12,7 +13,7 @@ function EditPost() {
     if (slug) {
       appwriteService.getPost(slug).then((post) => {
         if (post) {
-          setPost(post);
+          setPost(post as any);
         }
       });
     } else {
